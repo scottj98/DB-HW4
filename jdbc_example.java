@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class jdbc_example {
 
@@ -20,15 +21,63 @@ public class jdbc_example {
         jdbc_example test = new jdbc_example();
         test.connect(Username, mysqlPassword);
         test.initDatabase(Username, mysqlPassword, Username);
+        
+        System.out.println("Main Menu");
+        
+        System.out.println("1. Find all agents and clients in a given city");
+        System.out.println("2. Add a new client, then purchase an available policy from a particular agent");
+        Sytem.out.println("3. List all policies sold by a particular agent");
+        Sytem.out.println("4. Cancel a policy");
+        Sytem.out.println("5. Add a new agent to a city");
+        Sytem.out.println("6. Quit");
+        
+        Scanner input = new Scanner(System.in);
+        
+        System.println("Enter a number from the Main Menu");
+        int choice = input.nextInt();
+        
+        switch(choice){
+            case 1:
+                Scanner input1 = new Scanner(System.in);
+                System.out.println("Enter a city");
+                String city = input.nextLine();
+                
+                String query1 = "SELECT * FROM Clients WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
+                String query1a = "SELECT * FROM Agents WHERE C_CITY = '" + city + "';";
+                
+                test.query(query1);
+                test.query(query1a);
+                
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                
+                break;
+            case 6:
+                
+                test.disConnect();
+                break;
+                
+            default:
+                Sytstem.out.println("Number doesnt exist"); //we can have it quit
+                
 
-        String query1 = "SELECT * from Dish";
-        String query2 = "SELECT restaurantName, city, dishName, price " +
+        //String query1 = "SELECT * from Dish";
+        /*String query2 = "SELECT restaurantName, city, dishName, price " +
                 "FROM Restaurant, Dish, MenuItem " +
                 "WHERE MenuItem.restaurantNo=Restaurant.restaurantID " +
-                "AND MenuItem.dishNo=Dish.dishNo";
+                "AND MenuItem.dishNo=Dish.dishNo";*/
 
-        test.query(query1);
-        test.query(query2);
+        //test.query(query1);
+        //test.query(query2);
 
         test.disConnect();
     }
