@@ -40,7 +40,7 @@ public class jdbc_example {
             case 1:
                 Scanner input1 = new Scanner(System.in);
                 System.out.println("Enter a city");
-                String city1 = input.nextLine();
+                String city1 = input1.nextLine();
 				
 				operation1(city1); // thinking this looks better in a function
                 
@@ -54,20 +54,20 @@ public class jdbc_example {
             case 2:
 				Scanner input2 = new Scanner(System.in);
 				
-				System.out.print("Enter your name: "); // getting user's name
-				String name = input2.next();
+				System.out.println("Enter your name: "); // getting user's name
+				String name = input2.nextLine();
 				
-				System.out.print("Enter your city: "); // getting user's city
-				String city2 = input2.next();
+				System.out.println("Enter your city: "); // getting user's city
+				String city2 = input2.nextLine();
 				
-				System.out.print("Enter your zip code: "); // getting user's zip code
+				System.out.println("Enter your zip code: "); // getting user's zip code
 				int zipCode = input2.nextInt();
 				
 				insert("CLIENTS", "name, city, zipCode"); // not sure if correct format
 				
 				System.out.println("\n          --- POLICIES ---");
 				System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
-				System.out.print("What kind of policy do you want to purchase? ");
+				System.out.println("What kind of policy do you want to purchase? ");
 				String purchasePolicy = input2.next(); // gets policy that user wants
 				purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
 				
@@ -80,16 +80,42 @@ public class jdbc_example {
             case 4:
                 
                 break;
+			
             case 5:
-                
+		Scanner input5 = new Scanner(System.in);
+		System.out.println("Enter a city");
+		String city = input5.nextLine();
+			
+		Scanner input5a = new Scanner(System.in);//do we need to create a new scanner for each input?
+		System.out.println("Enter an Agent ID");
+		String a_id = input5a.nextInt();
+		
+		Scanner input5b = new Scanner(System.in);
+		System.out.println("Enter an Agent Name");
+		String a_name = input5b.nextLine();
+		
+		/*Scanner input5c = new Scanner(System.in);   do we need to ask them for the city if they already provided one?
+		System.out.println("Enter the agent's city");
+		String a_city = input5c.nextLine();*/
+		
+		Scanner input5c = new Scanner(System.in);
+		System.out.println("Enter a zip code");
+		String a_zip = input5c.nextInt();
+		
+		insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
+		
+		operation5(city);
+		
+		
                 break;
+			
             case 6:
                 
                 test.disConnect();
                 break;
                 
             default:
-                Sytstem.out.println("Number doesnt exist"); //we can have it quit
+                Sytstem.out.println("Number doesnt exist"); //we can have it quit?
                 
 
         //String query1 = "SELECT * from Dish";
@@ -104,18 +130,26 @@ public class jdbc_example {
         test.disConnect();
     }
 	
-	public void operation1(String city) { // not sure how to return the query
+    public void operation1(String c_city) { // not sure how to return the query
 		String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
                 String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
                 
                 test.query(query1);
                 test.query(query1a);
-	}
+    }
 	
-	public void operation2() {
+    public void operation2() {
 		
-	}
-
+    }	
+	
+    public void operation5(String city){
+    	
+	    String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';"; 
+	    
+	    test.query(query5);
+	   
+    }
+	    
     // Connect to the database
     public void connect(String Username, String mysqlPassword) throws SQLException {
         try {
