@@ -40,16 +40,38 @@ public class jdbc_example {
             case 1:
                 Scanner input1 = new Scanner(System.in);
                 System.out.println("Enter a city");
-                String city = input.nextLine();
+                String city1 = input.nextLine();
+				
+				operation1(city1); // thinking this looks better in a function
                 
-                String query1 = "SELECT * FROM Clients WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
-                String query1a = "SELECT * FROM Agents WHERE C_CITY = '" + city + "';";
+                /*String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
+                String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
                 
                 test.query(query1);
-                test.query(query1a);
+                test.query(query1a);*/
                 
                 break;
             case 2:
+				Scanner input2 = new Scanner(System.in);
+				
+				System.out.print("Enter your name: "); // getting user's name
+				String name = input2.next();
+				
+				System.out.print("Enter your city: "); // getting user's city
+				String city2 = input2.next();
+				
+				System.out.print("Enter your zip code: "); // getting user's zip code
+				int zipCode = input2.nextInt();
+				
+				insert("CLIENTS", "name, city, zipCode"); // not sure if correct format
+				
+				System.out.println("\n          --- POLICIES ---");
+				System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
+				System.out.print("What kind of policy do you want to purchase? ");
+				String purchasePolicy = input2.next(); // gets policy that user wants
+				purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
+				
+				
                 
                 break;
             case 3:
@@ -81,6 +103,18 @@ public class jdbc_example {
 
         test.disConnect();
     }
+	
+	public void operation1(String city) { // not sure how to return the query
+		String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
+                String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
+                
+                test.query(query1);
+                test.query(query1a);
+	}
+	
+	public void operation2() {
+		
+	}
 
     // Connect to the database
     public void connect(String Username, String mysqlPassword) throws SQLException {
@@ -163,46 +197,41 @@ public class jdbc_example {
     // Assumes that the tables are already created
     public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
         statement = connection.createStatement();
-        statement.executeUpdate("DELETE from FoodOrder");
-        statement.executeUpdate("DELETE from MenuItem");
-        statement.executeUpdate("DELETE from Dish");
-        statement.executeUpdate("DELETE from Restaurant");
+        statement.executeUpdate("DELETE from CLIENTS");
+        statement.executeUpdate("DELETE from AGENTS");
+        statement.executeUpdate("DELETE from POLICY");
+        statement.executeUpdate("DELETE from POLICIES_SOLD");
 
-        insert("Restaurant", "0, 'Tasty Thai', 'Asian', 'Dallas'");
-        insert("Restaurant", "3,'Eureka Pizza','Pizza', 'Fayetteville'");
-        insert("Restaurant", "5,'Tasty Thai','Asian', 'Las Vegas'");
+		insert("CLIENTS", "101, 'CHRIS', 'DALLAS', 43214");
+        insert("CLIENTS", "102, 'OLIVIA', 'BOSTON', 83125");
+		insert("CLIENTS", "103, 'ETHAN', 'FAYETTEVILLE', 72701");
+		insert("CLIENTS", "104, 'DANIEL', 'NEWYORK', 53421");
+		insert("CLIENTS", "105, 'TAYLOR', 'ROGERS', 78291");
+		insert("CLIENTS", "106, 'CLAIRE', 'PHOENIX', 85011");
 
-        insert("Dish", "13,'Spring Roll','ap'");
-        insert("Dish", "15,'Pad Thai','en'");
-        insert("Dish", "16,'Pad Stickers','ap'");
-        insert("Dish", "22,'Masaman Curry','en'");
-        insert("Dish", "10,'Custard','ds'");
-        insert("Dish", "12,'Garlic Bread','ap'");
-        insert("Dish", "44,'Salad','ap'");
-        insert("Dish", "07,'Cheese Pizza','en'");
-        insert("Dish", "19,'Pepperoni Pizza','en'");
-        insert("Dish", "77,'Vegi Supreme Pizza','en'");
+        insert("AGENTS", "201, 'ANDREW', 'DALLAS', 43214");
+		insert("AGENTS", "202, 'PHILIP', 'PHOENIX', 85011");
+		insert("AGENTS", "203, 'JERRY', 'BOSTON', 83125");
+		insert("AGENTS", "204, 'BRYAN', 'ROGERS', 78291");
+		insert("AGENTS", "205, 'TOMMY', 'DALLAS', 43214");
+		insert("AGENTS", "206, 'BRYANT', 'FAYETTEVILLE', 72701");
+		insert("AGENTS", "207, 'SMITH', 'ROGERS', 78291");
 
-        insert("MenuItem", "0,0,13,8.00");
-        insert("MenuItem", "1,0,16,9.00");
-        insert("MenuItem", "2,0,44,10.00");
-        insert("MenuItem", "3,0,15,19.00");
-        insert("MenuItem", "4, 0,22,19.00");
-        insert("MenuItem", "5, 3,44,6.25");
-        insert("MenuItem", "6, 3,12,5.50");
-        insert("MenuItem", "7, 3,7,12.50");
-        insert("MenuItem", "8, 3,19,13.50");
-        insert("MenuItem", "9,5,13,6.00");
-        insert("MenuItem", "10,5,15,15.00");
-        insert("MenuItem", "11,5,22,14.00");
+        insert("POLICY", "301, 'CIGNAHEALTH', 'DENTAL', 5");
+		insert("POLICY", "302, 'GOLD', 'LIFE', 8");
+		insert("POLICY", "303, 'WELLCARE', 'HOME', 10");
+		insert("POLICY", "304, 'UNITEDHEALTH', 'HEALTH', 7");
+		insert("POLICY", "305, 'UNITEDCAR', 'VEHICLE', 9");
 
-        insert("FoodOrder", "0,2,STR_To_DATE('01,03,2017', '%d,%m,%Y'), '10:30'");
-        insert("FoodOrder", "1,0,STR_To_DATE('02,03,2017', '%d,%m,%Y'), '15:33'");
-        insert("FoodOrder", "2,3,STR_To_DATE('01,03,2017', '%d,%m,%Y'), '15:35'");
-        insert("FoodOrder", "3,5,STR_To_DATE('03,03,2017', '%d,%m,%Y'), '21:00'");
-        insert("FoodOrder", "4,7,STR_To_DATE('01,03,2017', '%d,%m,%Y'), '18:11'");
-        insert("FoodOrder", "5,7,STR_To_DATE('04,03,2017', '%d,%m,%Y'), '18:51'");
-        insert("FoodOrder", "6,9,STR_To_DATE('01,03,2017', '%d,%m,%Y'), '19:00'");
-        insert("FoodOrder", "7,11,STR_To_DATE('05,03,2017', '%d,%m,%Y'), '17:15'");
+		insert("POLICIES_SOLD", "401, 204, 106, 303, STR_TO_DATE('2020-01-02', '%Y-%m-%d'), 2000.00");
+		insert("POLICIES_SOLD", "402, 201, 105, 305, STR_TO_DATE('2019-08-11', '%Y-%m-%d'), 1500.00");
+		insert("POLICIES_SOLD", "403, 203, 106, 301, STR_TO_DATE('2019-09-08', '%Y-%m-%d'), 3000.00");
+		insert("POLICIES_SOLD", "404, 207, 101, 305, STR_TO_DATE('2019-06-21', '%Y-%m-%d'), 1500.00");
+		insert("POLICIES_SOLD", "405, 203, 104, 302, STR_TO_DATE('2019-11-14', '%Y-%m-%d'), 4500.00");
+		insert("POLICIES_SOLD", "406, 207, 105, 305, STR_TO_DATE('2019-12-25', '%Y-%m-%d'), 1500.00");
+		insert("POLICIES_SOLD", "407, 205, 103, 304, STR_TO_DATE('2020-10-15', '%Y-%m-%d'), 5000.00");
+		insert("POLICIES_SOLD", "408, 204, 103, 304, STR_TO_DATE('2020-02-15', '%Y-%m-%d'), 5000.00");
+		insert("POLICIES_SOLD", "409, 203, 103, 304, STR_TO_DATE('2020-01-10', '%Y-%m-%d'), 5000.00");
+		insert("POLICIES_SOLD", "410, 202, 103, 303, STR_TO_DATE('2020-01-30', '%Y-%m-%d'), 2000.00");
     }
 }
