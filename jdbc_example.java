@@ -88,17 +88,17 @@ public class jdbc_example {
 		String city = input5.nextLine();
 			
 		System.out.println("Enter an Agent ID");
-		int a_id = input5a.nextInt();
+		int a_id = input5.nextInt();
 		
 		System.out.println("Enter an Agent Name");
-		String a_name = input5b.nextLine();
+		String a_name = input5.nextLine();
 		
 		/*Scanner input5c = new Scanner(System.in);   do we need to ask them for the city if they already provided one?
 		System.out.println("Enter the agent's city");
 		String a_city = input5c.nextLine();*/
 		
 		System.out.println("Enter a zip code");
-		int a_zip = input5c.nextInt();
+		int a_zip = input5.nextInt();
 		
 		insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
 		
@@ -113,7 +113,7 @@ public class jdbc_example {
                 break;
                 
             default:
-                Sytstem.out.println("Number doesnt exist"); //we can have it quit?
+                System.out.println("Number doesnt exist"); //we can have it quit?
                 
 
         //String query1 = "SELECT * from Dish";
@@ -130,8 +130,8 @@ public class jdbc_example {
 	    
     }	
     public void operation1(String c_city) { // not sure how to return the query
-		String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
-                String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
+		String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + c_city + "';"; //depends on how you named your tables
+                String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + c_city + "';";
                 
                 test.query(query1);
                 test.query(query1a);
