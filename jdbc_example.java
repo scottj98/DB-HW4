@@ -26,14 +26,14 @@ public class jdbc_example {
         
         System.out.println("1. Find all agents and clients in a given city");
         System.out.println("2. Add a new client, then purchase an available policy from a particular agent");
-        Sytem.out.println("3. List all policies sold by a particular agent");
-        Sytem.out.println("4. Cancel a policy");
-        Sytem.out.println("5. Add a new agent to a city");
-        Sytem.out.println("6. Quit");
+        System.out.println("3. List all policies sold by a particular agent");
+        System.out.println("4. Cancel a policy");
+        System.out.println("5. Add a new agent to a city");
+        System.out.println("6. Quit");
         
         Scanner input = new Scanner(System.in);
         
-        System.println("Enter a number from the Main Menu");
+        System.out.println("Enter a number from the Main Menu");
         int choice = input.nextInt();
         
         switch(choice){
@@ -83,14 +83,13 @@ public class jdbc_example {
 			
             case 5:
 		Scanner input5 = new Scanner(System.in);
+		
 		System.out.println("Enter a city");
 		String city = input5.nextLine();
 			
-		Scanner input5a = new Scanner(System.in);//do we need to create a new scanner for each input?
 		System.out.println("Enter an Agent ID");
-		String a_id = input5a.nextInt();
+		int a_id = input5a.nextInt();
 		
-		Scanner input5b = new Scanner(System.in);
 		System.out.println("Enter an Agent Name");
 		String a_name = input5b.nextLine();
 		
@@ -98,9 +97,8 @@ public class jdbc_example {
 		System.out.println("Enter the agent's city");
 		String a_city = input5c.nextLine();*/
 		
-		Scanner input5c = new Scanner(System.in);
 		System.out.println("Enter a zip code");
-		String a_zip = input5c.nextInt();
+		int a_zip = input5c.nextInt();
 		
 		insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
 		
@@ -129,7 +127,8 @@ public class jdbc_example {
 
         test.disConnect();
     }
-	
+	    
+    }	
     public void operation1(String c_city) { // not sure how to return the query
 		String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
                 String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
