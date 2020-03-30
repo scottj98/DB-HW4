@@ -4,8 +4,8 @@ import java.util.Scanner;
 public class jdbc_example {
 
     // The instance variables for the class
-    private Connection connection;
-    private Statement statement;
+    private static Connection connection;
+    private static Statement statement;
 
     // The constructor for the class
     public jdbc_example() {
@@ -20,8 +20,9 @@ public class jdbc_example {
 
         jdbc_example test = new jdbc_example();
         test.connect(Username, mysqlPassword);
-        test.initDatabase(Username, mysqlPassword, Username);
-        
+        //test.initDatabase(Username, mysqlPassword, Username);
+        statement = connection.createStatement();
+	    
         System.out.println("Main Menu");
         
         System.out.println("1. Find all agents and clients in a given city");
@@ -42,7 +43,7 @@ public class jdbc_example {
                 System.out.println("Enter a city");
                 String city1 = input1.nextLine();
 				
-				operation1(city1); // thinking this looks better in a function
+		test.operation1(city1); // thinking this looks better in a function
                 
                 /*String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
                 String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
@@ -52,33 +53,39 @@ public class jdbc_example {
                 
                 break;
             case 2:
-				Scanner input2 = new Scanner(System.in);
+		Scanner input2 = new Scanner(System.in);
 				
-				System.out.println("Enter your name: "); // getting user's name
-				String name = input2.nextLine();
+		System.out.println("Enter your name: "); // getting user's name
+		String name = input2.nextLine();
 				
-				System.out.println("Enter your city: "); // getting user's city
-				String city2 = input2.nextLine();
+		System.out.println("Enter your city: "); // getting user's city
+		String city2 = input2.nextLine();
+			
+		System.out.println("Enter your zip code: "); // getting user's zip code
+		int zipCode = input2.nextInt();
 				
-				System.out.println("Enter your zip code: "); // getting user's zip code
-				int zipCode = input2.nextInt();
-				
-				insert("CLIENTS", "name, city, zipCode"); // not sure if correct format
-				
-				System.out.println("\n          --- POLICIES ---");
-				System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
-				System.out.println("What kind of policy do you want to purchase? ");
-				String purchasePolicy = input2.next(); // gets policy that user wants
-				purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
-				
-				
-                
+		insert("CLIENTS", "name, city, zipCode"); // not sure if correct format
+			
+		System.out.println("\n          --- POLICIES ---");
+		System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
+		System.out.println("What kind of policy do you want to purchase? ");
+		String purchasePolicy = input2.next(); // gets policy that user wants
+		purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
+				    
                 break;
             case 3:
                 
                 break;
             case 4:
-                
+                test.operation4a();
+				
+		Scanner input4 = new Scanner(System.in);
+
+		System.out.println("Enter the purchase id that you wish to cancel");
+		int id = input4.nextInt();
+				
+		test.operation4b(id);
+					
                 break;
 			
             case 5:
@@ -100,9 +107,9 @@ public class jdbc_example {
 		System.out.println("Enter a zip code");
 		int a_zip = input5.nextInt();
 		
-		insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
+		test.insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
 		
-		operation5(city);
+		test.operation5(city);
 		
 		
                 break;
@@ -126,26 +133,37 @@ public class jdbc_example {
         //test.query(query2);
 
         test.disConnect();
-    }
+   	}
 	    
     }	
     public void operation1(String c_city) { // not sure how to return the query
-		String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + c_city + "';"; //depends on how you named your tables
-                String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + c_city + "';";
+	String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + c_city + "';"; //depends on how you named your tables
+        String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + c_city + "';";
                 
-                test.query(query1);
-                test.query(query1a);
+        query(query1);
+        query(query1a);
     }
 	
     public void operation2() {
 		
     }	
 	
+    public void operation4a(){
+	String query4a = "SELECT * FROM Policies_Sold;"; 
+	
+	query(query4a);
+    }
+
+    public void operation4b(int pur_id) {	
+	String query4b = "DELETE FROM Policies_Sold WHERE PURCHASE_ID = '" + pur_id + "';"; 
+		
+	query(query4b);
+    }
+	
     public void operation5(String city){
-    	
-	    String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';"; 
+    	String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';"; 
 	    
-	    test.query(query5);
+	query(query5);
 	   
     }
 	    
@@ -217,8 +235,8 @@ public class jdbc_example {
     }
 
     // Insert into any table, any values from data passed in as String parameters
-    public void insert(String table, String values) {
-        String query = "INSERT into " + table + " values (" + values + ")" ;
+    public void insert(String table, int id, String name, String city, int zip) {
+        String query = "INSERT into " + table + " values ("+ id +" " + name + " "+ city + " " + zip +")" ;
         try {
             statement.executeUpdate(query);
         } catch (SQLException e) {
@@ -228,7 +246,7 @@ public class jdbc_example {
 
     // Remove all records and fill them with values for testing
     // Assumes that the tables are already created
-    public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
+    /*public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
         statement = connection.createStatement();
         statement.executeUpdate("DELETE from CLIENTS");
         statement.executeUpdate("DELETE from AGENTS");
@@ -266,5 +284,5 @@ public class jdbc_example {
 		insert("POLICIES_SOLD", "408, 204, 103, 304, STR_TO_DATE('2020-02-15', '%Y-%m-%d'), 5000.00");
 		insert("POLICIES_SOLD", "409, 203, 103, 304, STR_TO_DATE('2020-01-10', '%Y-%m-%d'), 5000.00");
 		insert("POLICIES_SOLD", "410, 202, 103, 303, STR_TO_DATE('2020-01-30', '%Y-%m-%d'), 2000.00");
-    }
+    }*/
 }
