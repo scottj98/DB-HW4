@@ -107,25 +107,27 @@ public class jdbc_example {
 			
         	case 5:
 			Scanner input5 = new Scanner(System.in);
-		
-			System.out.println("Enter a city");
-			String city = input5.nextLine();
 			
 			System.out.println("Enter an Agent ID");
 			int a_id = input5.nextInt();
-		
-			System.out.println("Enter an Agent Name");
 			String a_name = input5.nextLine();
+			System.out.println("Enter an Agent Name");
+			a_name = input5.nextLine();
+			
+			System.out.println("Enter a zip code");
+			int a_zip = input5.nextInt();
+			String city = input5.nextLine();
+			System.out.println("Enter a city");
+			city = input5.nextLine();
+			
 		
 		/*Scanner input5c = new Scanner(System.in);   do we need to ask them for the city if they already provided one?
 		System.out.println("Enter the agent's city");
 		String a_city = input5c.nextLine();*/
 		
-			System.out.println("Enter a zip code");
-			int a_zip = input5.nextInt();
+			String adds = a_id + ",'"+a_name+"',"+"'"+city+"',"+a_zip;
 		
-			test.insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
-		
+			test.insert("AGENTS", adds);
 			test.operation5(city);
 		
 		
