@@ -22,28 +22,30 @@ public class jdbc_example {
         test.connect(Username, mysqlPassword);
         //test.initDatabase(Username, mysqlPassword, Username);
         statement = connection.createStatement();
-	    
-        System.out.println("Main Menu");
+	
+	int number = 1;
+	while (number != 0){    
+        	System.out.println("Main Menu");
         
-        System.out.println("1. Find all agents and clients in a given city");
-        System.out.println("2. Add a new client, then purchase an available policy from a particular agent");
-        System.out.println("3. List all policies sold by a particular agent");
-        System.out.println("4. Cancel a policy");
-        System.out.println("5. Add a new agent to a city");
-        System.out.println("6. Quit");
+        	System.out.println("1. Find all agents and clients in a given city");
+        	System.out.println("2. Add a new client, then purchase an available policy from a particular agent");
+        	System.out.println("3. List all policies sold by a particular agent");
+        	System.out.println("4. Cancel a policy");
+        	System.out.println("5. Add a new agent to a city");
+        	System.out.println("6. Quit");
         
-        Scanner input = new Scanner(System.in);
+        	Scanner input = new Scanner(System.in);
         
-        System.out.println("Enter a number from the Main Menu");
-        int choice = input.nextInt();
+        	System.out.println("Enter a number from the Main Menu");
+        	int choice = input.nextInt();
         
-        switch(choice){
-            case 1:
-                Scanner input1 = new Scanner(System.in);
-                System.out.println("Enter a city");
-                String city1 = input1.nextLine();
+        	switch(choice){
+        	case 1:
+                	Scanner input1 = new Scanner(System.in);
+                	System.out.println("Enter a city");
+                	String city1 = input1.nextLine();
 				
-		test.operation1(city1); // thinking this looks better in a function
+			test.operation1(city1); // thinking this looks better in a function
                 
                 /*String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
                 String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
@@ -51,76 +53,76 @@ public class jdbc_example {
                 test.query(query1);
                 test.query(query1a);*/
                 
-                break;
-            case 2:
-		Scanner input2 = new Scanner(System.in);
+                	break;
+            	case 2:
+			Scanner input2 = new Scanner(System.in);
 				
-		System.out.println("Enter your name: "); // getting user's name
-		String name = input2.nextLine();
+			System.out.println("Enter your name: "); // getting user's name
+			String name = input2.nextLine();
 				
-		System.out.println("Enter your city: "); // getting user's city
-		String city2 = input2.nextLine();
+			System.out.println("Enter your city: "); // getting user's city
+			String city2 = input2.nextLine();
 			
-		System.out.println("Enter your zip code: "); // getting user's zip code
-		int zipCode = input2.nextInt();
+			System.out.println("Enter your zip code: "); // getting user's zip code
+			int zipCode = input2.nextInt();
 				
-		insert("CLIENTS", "name, city, zipCode"); // not sure if correct format
+			insert("CLIENTS", "name, city, zipCode"); // not sure if correct format
 			
-		System.out.println("\n          --- POLICIES ---");
-		System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
-		System.out.println("What kind of policy do you want to purchase? ");
-		String purchasePolicy = input2.next(); // gets policy that user wants
-		purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
+			System.out.println("\n          --- POLICIES ---");
+			System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
+			System.out.println("What kind of policy do you want to purchase? ");
+			String purchasePolicy = input2.next(); // gets policy that user wants
+			purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
 				    
-                break;
-            case 3:
+                	break;
+            	case 3:
                 
                 break;
-            case 4:
-                test.operation4a();
+            	case 4:
+                	test.operation4a();
 				
-		Scanner input4 = new Scanner(System.in);
+			Scanner input4 = new Scanner(System.in);
 
-		System.out.println("Enter the purchase id that you wish to cancel");
-		int id = input4.nextInt();
+			System.out.println("Enter the purchase id that you wish to cancel");
+			int id = input4.nextInt();
 				
-		test.operation4b(id);
+			test.operation4b(id);
 					
-                break;
+                	break;
 			
-            case 5:
-		Scanner input5 = new Scanner(System.in);
+        	case 5:
+			Scanner input5 = new Scanner(System.in);
 		
-		System.out.println("Enter a city");
-		String city = input5.nextLine();
+			System.out.println("Enter a city");
+			String city = input5.nextLine();
 			
-		System.out.println("Enter an Agent ID");
-		int a_id = input5.nextInt();
+			System.out.println("Enter an Agent ID");
+			int a_id = input5.nextInt();
 		
-		System.out.println("Enter an Agent Name");
-		String a_name = input5.nextLine();
+			System.out.println("Enter an Agent Name");
+			String a_name = input5.nextLine();
 		
 		/*Scanner input5c = new Scanner(System.in);   do we need to ask them for the city if they already provided one?
 		System.out.println("Enter the agent's city");
 		String a_city = input5c.nextLine();*/
 		
-		System.out.println("Enter a zip code");
-		int a_zip = input5.nextInt();
+			System.out.println("Enter a zip code");
+			int a_zip = input5.nextInt();
 		
-		test.insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
+			test.insert("AGENTS", "a_id, a_name, city, a_zip"); //not sure if correct format either
 		
-		test.operation5(city);
+			test.operation5(city);
 		
 		
-                break;
+                	break;
 			
-            case 6:
-                
-                test.disConnect();
+                case 6:
+                        number = 0;
+                	test.disConnect();
                 break;
                 
-            default:
-                System.out.println("Number doesnt exist"); //we can have it quit?
+            	default:
+                	System.out.println("Number doesnt exist"); //we can have it quit?
                 
 
         //String query1 = "SELECT * from Dish";
@@ -132,8 +134,9 @@ public class jdbc_example {
         //test.query(query1);
         //test.query(query2);
 
-        test.disConnect();
-   	}
+        		test.disConnect();
+   		}
+	}
 	    
     }	
     public void operation1(String c_city) { // not sure how to return the query
