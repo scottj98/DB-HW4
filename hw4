@@ -123,7 +123,7 @@ public class jdbc_example {
 		
 			String adds = a_id + ",'"+a_name+"',"+"'"+city+"',"+a_zip;
 			
-			test.insert("Agents", adds);
+			test.insert("AGENTS", adds);
 			test.operation5(city);
 
                 	break;
