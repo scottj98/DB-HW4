@@ -6,7 +6,7 @@ public class jdbc_example {
     // The instance variables for the class
     private static Connection connection;
     private static Statement statement;
-
+	private static int aID;
     // The constructor for the class
     public jdbc_example() {
         connection = null;
@@ -90,7 +90,7 @@ public class jdbc_example {
 
                 break;
 
-            	case 4:
+            	case 4: 
                 	test.operation4a();
 
 			Scanner input4 = new Scanner(System.in);
@@ -103,13 +103,21 @@ public class jdbc_example {
                 	break;
 
         	case 5:
-			Scanner input5 = new Scanner(System.in);
+			try{
+				Scanner input5 = new Scanner(System.in);
 
-				System.out.println("Enter an Agent ID");
-				int a_id = input5.nextInt();
-				String a_name = input5.nextLine();
+				String agent_id = "SELECT MAX(A_ID) AS A_ID FROM AGENTS";
+				Statement state = connection.createStatement();
+				ResultSet res5a = state.executeQuery(agent_id);
+				if(res5a.next()){
+					aID = res5a.getInt("A_ID");
+					aID++;
+				}
+				//System.out.println("Enter an Agent ID");
+				//int a_id = input5.nextInt();
+				//String a_name = input5.nextLine();
 				System.out.println("Enter an Agent Name");
-				a_name = input5.nextLine();
+				String a_name = input5.nextLine();
 				
 				System.out.println("Enter a zip code");
 				int a_zip = input5.nextInt();
@@ -119,14 +127,17 @@ public class jdbc_example {
 		/*Scanner input5c = new Scanner(System.in);   do we need to ask them for the city if they already provided one?
 		System.out.println("Enter the agent's city");
 		String a_city = input5c.nextLine();*/
+			
 
-
-			String adds = a_id + ",'"+a_name+"',"+"'"+city+"',"+a_zip;
+				String adds = aID + ",'"+a_name+"',"+"'"+city+"',"+a_zip;
 			
 			
-			test.insert("AGENTS", adds);
-			test.operation5(city);
-
+				test.insert("AGENTS", adds);
+				test.operation5(city);
+			}
+			catch(SQLException err) {
+				System.out.println(err.getMessage());
+			}
 
                 	break;
 
@@ -236,15 +247,32 @@ public class jdbc_example {
     }
 
     public void operation4b(int pur_id) {
-	String query4b = "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = '" + pur_id + "';";
-
+		try{
+		int row = statement.executeUpdate(deleteById(pur_id));
+		System.out.println(row);
+		}
+		catch (SQLException e) {
+            System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+        } 
+		catch (Exception e) {
+            e.printStackTrace();
+        }
+	
+	String query4b = "SELECT * FROM POLICIES_SOLD;";
 	query(query4b);
+	
     }
-
+	public static String deleteById(int p_id){
+		return "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + p_id + ";";
+	}
+	
     public void operation5(String city){
     	String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';";
-
+	
 	query(query5);
+	
+		String check = "SELECT * FROM AGENTS";
+	query(check);
 
     }
 
@@ -280,6 +308,7 @@ public class jdbc_example {
             e.printStackTrace();
         }
     }
+	
 
     // Print the results of a query with attribute names on the first line
     // Followed by the tuples, one per line
