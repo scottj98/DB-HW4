@@ -291,8 +291,6 @@ public class jdbc_example {
 	
 	query(query5);
 	
-	String check = "SELECT * FROM AGENTS";
-	query(check);
 
     }
 
