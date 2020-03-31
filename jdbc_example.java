@@ -374,7 +374,7 @@ public class jdbc_example {
 
     // Remove all records and fill them with values for testing
     // Assumes that the tables are already created
-    public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
+    /*public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
         statement = connection.createStatement();
         statement.executeUpdate("DELETE from CLIENTS");
         statement.executeUpdate("DELETE from AGENTS");
@@ -408,5 +408,5 @@ public class jdbc_example {
 		insert("POLICIES_SOLD", "408, 204, 103, 304, STR_TO_DATE('2020-02-15', '%Y-%m-%d'), 5000.00");
 		insert("POLICIES_SOLD", "409, 203, 103, 304, STR_TO_DATE('2020-01-10', '%Y-%m-%d'), 5000.00");
 		insert("POLICIES_SOLD", "410, 202, 103, 303, STR_TO_DATE('2020-01-30', '%Y-%m-%d'), 2000.00");
-    }
+    }*/
 }
