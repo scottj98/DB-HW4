@@ -7,6 +7,9 @@ public class jdbc_example {
     private static Connection connection;
     private static Statement statement;
 	private static int aID;
+	private static int cID;
+	private static int pID;
+	private static int grabTheID;
     // The constructor for the class
     public jdbc_example() {
         connection = null;
@@ -172,46 +175,84 @@ public class jdbc_example {
         query(query1a);
     }
 
-    public void operation2(String name, String city, int zip,String pPolicy) {
-        Scanner input2b = new Scanner(System.in);
+   public void operation2(String name, String city, int zip) {
+        try {
 
-        String op2Insert = name + ", " + city + ", " + zip;
+            Scanner input2b = new Scanner(System.in);
 
-        insert("CLIENTS", op2Insert); // not sure if correct format
+            String clientID = "SELECT MAX(C_ID) AS C_ID FROM CLIENTS";
+            Statement st2a = connection.createStatement();
+            ResultSet rs2a = st2a.executeQuery(clientID);
+            if (rs2a.next()) {
+                cID = rs2a.getInt("C_ID");
+                cID++;
+            }
+            st2a.close();
 
-		String checkPolicy = "SELECT * FROM POLICY WHERE TYPE = '" + pPolicy + "'";
+            String op2Insert = cID + ",'"+ name + "'," + "'" + city + "'," + "'" + zip + "'";
+            insert("CLIENTS", op2Insert); // not sure if correct format
 
-		try {
-            ResultSet rs2 = statement.executeQuery(checkPolicy);
+            String check = "SELECT * FROM CLIENTS";
+            query(check);
 
-            if (rs2.next()) {
-                String query2 = "SELECT * FROM AGENTS, POLICY" +
-                                 "WHERE AGENTS.A_CITY = '" + city + "' AND POLICY.TYPE = '" + pPolicy + "'";
+            System.out.println("\n          --- POLICIES ---");
+            System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
+            System.out.println("What kind of policy do you want to purchase? ");
+            String purchasePolicy = input2b.nextLine(); // gets policy that user wants
+            purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
+
+            String checkPolicy = "SELECT * FROM POLICY WHERE TYPE = '" + purchasePolicy + "'";
+
+            ResultSet rs2b = statement.executeQuery(checkPolicy);
+
+            if (rs2b.next()) {
+                String query2 = "SELECT * FROM AGENTS, POLICY " +
+                                "WHERE AGENTS.A_CITY = '" + city + "' AND POLICY.TYPE = '" + purchasePolicy + "'";
                 query(query2);
 
+                String grabID = "SELECT C_ID FROM CLIENTS WHERE C_NAME = '" + name + "'";
+                Statement st2b = connection.createStatement();
+                ResultSet rs2c = st2b.executeQuery(grabID);
+                if (rs2c.next()) {
+                    grabTheID = rs2c.getInt("C_ID");
+                }
+                //query(grabID);
+
                 System.out.println("Enter agents's ID to buy policy from: ");
-                String agentID = input2b.nextLine();
+                int agentID = input2b.nextInt();
 
                 System.out.println("Enter a policy ID shown: ");
-                String pChoice = input2b.nextLine();
+                int pChoice = input2b.nextInt();
 
                 System.out.println("Enter the amount you want: ");
                 Double amount = input2b.nextDouble();
 
-                String grabID = "SELECT ID FROM CLIENTS WHERE C_NAME = '" + name + "'";
+                input2b.nextLine();
 
                 System.out.println("Enter the current date (yyyy-mm-dd): ");
                 String date = input2b.nextLine();
 
-                String op2String = pChoice + 1 + ", " + agentID + ", " + grabID + ", " + pChoice + ", " + date + ", " + amount;
+                String grabPurchase = "SELECT MAX(PURCHASE_ID) AS PURCHASE_ID FROM POLICIES_SOLD";
+                Statement st2c = connection.createStatement();
+                ResultSet rs2d = st2c.executeQuery(grabPurchase);
+                if (rs2d.next()) {
+                    pID = rs2d.getInt("PURCHASE_ID");
+                    pID++;
+                }
+                st2c.close();
+
+                String op2String = pID + ", " + agentID + ", " + grabTheID + ", " + pChoice + ",'" + date + "'," + amount;
 
                 insert("POLICIES_SOLD", op2String);
+
+                String check2 = "SELECT * FROM POLICIES_SOLD";
+                query(check2);
             }
             else
                 System.out.println("Policy not found!");
-		} catch (SQLException err) {
-            System.out.println(err.getMessage());
-		}
+            } catch (SQLException err) {
+                System.out.println(err.getMessage());
+            }
     }
 
 	public void operation3(String aName, String aCity) {
