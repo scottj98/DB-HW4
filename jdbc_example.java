@@ -232,33 +232,34 @@ public class jdbc_example {
                 System.out.println(err.getMessage());
             }
     }
-
-	public void operation3(String aName, String aCity) {
-		String checkName = "SELECT * from AGENTS WHERE A_NAME = '" + aName + "'";
+	
+    public void operation3(String aName, String aCity) {
 
 		try {
-            ResultSet rs3A = statement.executeQuery(checkName);
+            String checkNameCity = "SELECT A_NAME, A_CITY FROM AGENTS WHERE A_NAME = '" + aName + "' AND A_CITY = '" + aCity + "'";
+            Statement st3 = connection.createStatement();
+            ResultSet rs3 = statement.executeQuery(checkNameCity);
 
-            String checkCity = "SELECT * from AGENTS WHERE A_CITY = '" + aCity + "'";
-            ResultSet rs3B = statement.executeQuery(checkCity);
+            if (rs3.next()) {
+                String policies = "SELECT TYPE FROM POLICY " +
+                                  "WHERE POLICY_ID IN (SELECT POLICY_ID FROM POLICIES_SOLD " +
+                                  "WHERE AGENT_ID IN (SELECT A_ID FROM AGENTS WHERE A_NAME = '" + aName + "'))";
+                query(policies);
 
-            if (rs3A.next() && rs3B.next()) {
-                String query3 = "SELECT NAME, TYPE, COMMISSION_PERCENTAGE FROM POLICY" +
-                                 "WHERE POLICY_ID IN (" +
-                                 "SELECT POLICY_ID FROM POLICIES_SOLD" +
-                                 "WHERE AGENT_ID IN (" +
-                                 "SELECT A_ID FROM AGENTS" +
-                                 "WHERE A_NAME =  '" + aName + "'))";
-
+                String query3 = "SELECT NAME, TYPE, COMMISSION_PERCENTAGE FROM POLICY " +
+                                "WHERE POLICY_ID IN (SELECT POLICY_ID FROM POLICIES_SOLD " +
+                                "WHERE AGENT_ID IN (SELECT A_ID FROM AGENTS WHERE A_NAME = '" + aName + "'))";
                 query(query3);
             }
             else
                 System.out.println("Agent not found!");
+
+            //st3.close();
 		} catch (SQLException err) {
             System.out.println(err.getMessage());
 		}
 	}
-
+	
     public void operation4a(){
 	String query4a = "SELECT * FROM POLICIES_SOLD;";
 
