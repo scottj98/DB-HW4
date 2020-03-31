@@ -50,12 +50,6 @@ public class jdbc_example {
 
 			test.operation1(city1); // thinking this looks better in a function
 
-                /*String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + city + "';"; //depends on how you named your tables
-                String query1a = "SELECT * FROM AGENTS WHERE C_CITY = '" + city + "';";
-
-                test.query(query1);
-                test.query(query1a);*/
-
                 	break;
             	case 2:
 			Scanner input2 = new Scanner(System.in);
@@ -127,13 +121,8 @@ public class jdbc_example {
 				String city = input5.nextLine();
 				System.out.println("Enter a city");
 				city = input5.nextLine();
-		/*Scanner input5c = new Scanner(System.in);   do we need to ask them for the city if they already provided one?
-		System.out.println("Enter the agent's city");
-		String a_city = input5c.nextLine();*/
 			
-
 				String adds = aID + ",'"+a_name+"',"+"'"+city+"',"+a_zip;
-			
 			
 				test.insert("AGENTS", adds);
 				test.operation5(city);
@@ -147,21 +136,10 @@ public class jdbc_example {
                 case 6:
                         number = 0;
                 	test.disConnect();
-                break;
+                	break;
 
             	default:
                 	System.out.println("Number doesnt exist"); //we can have it quit?
-
-
-        //String query1 = "SELECT * from Dish";
-        /*String query2 = "SELECT restaurantName, city, dishName, price " +
-                "FROM Restaurant, Dish, MenuItem " +
-                "WHERE MenuItem.restaurantNo=Restaurant.restaurantID " +
-                "AND MenuItem.dishNo=Dish.dishNo";*/
-
-        //test.query(query1);
-        //test.query(query2);
-
         		test.disConnect();
    		}
 	}
@@ -288,14 +266,14 @@ public class jdbc_example {
     }
 
     public void operation4b(int pur_id) {
-		try{
+	try{
 		int row = statement.executeUpdate(deleteById(pur_id));
 		System.out.println(row);
-		}
-		catch (SQLException e) {
+	}
+	catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         } 
-		catch (Exception e) {
+	catch (Exception e) {
             e.printStackTrace();
         }
 	
@@ -303,16 +281,17 @@ public class jdbc_example {
 	query(query4b);
 	
     }
-	public static String deleteById(int p_id){
-		return "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + p_id + ";";
-	}
+	
+    public static String deleteById(int p_id){
+	return "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + p_id + ";";
+    }
 	
     public void operation5(String city){
     	String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';";
 	
 	query(query5);
 	
-		String check = "SELECT * FROM AGENTS";
+	String check = "SELECT * FROM AGENTS";
 	query(check);
 
     }
@@ -395,23 +374,6 @@ public class jdbc_example {
         }
     }
 
-	/*public void insert2(String table, int pID, String name, String type, int cPercentage) {
-		String queryInsert2 = "INSERT into " + table + " values ("+ pID + " " + name + " " + type + " " + cPercentage +")";
-		try {
-			statement.executeUpdate(queryInsert2);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void insert3(String table, int pID, int aID, int cID, int poID, String date, double amount) {
-		String queryInsert3 = "INSERT into " + table + " values ("+ pID + " " + aID + " " + cID + " " + poID + " " + date + " " + amount +")";
-		try {
-			statement.executeUpdate(queryInsert3);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
 
     // Remove all records and fill them with values for testing
     // Assumes that the tables are already created
