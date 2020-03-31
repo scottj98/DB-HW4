@@ -75,7 +75,7 @@ public class jdbc_example {
 			String purchasePolicy = input2.nextLine(); // gets policy that user wants
 			purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
 
-			test.operation2(name, city2, zipCode,purchasePolicy);
+			test.operation2(name, city2, zipCode);
 
                 	break;
             	case 3:
