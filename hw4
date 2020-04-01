@@ -259,7 +259,6 @@ public class hw4 {
     public void operation4b(int pur_id) {
 	try{
 		int row = statement.executeUpdate(deleteById(pur_id));  //delete row with matching purchase_id
-		System.out.println(row);                                //displays number of deleted rows
 	}
 	catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
