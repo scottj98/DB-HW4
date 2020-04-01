@@ -10,6 +10,7 @@ public class hw4 {
 	private static int cID;
 	private static int pID;
 	private static int grabTheID;
+	private static String purchasePolicy = "";
     // The constructor for the class
     public hw4() {
         connection = null;
@@ -43,11 +44,11 @@ public class hw4 {
 
         	switch(choice){
         	case 1:
-                	Scanner input1 = new Scanner(System.in); 
+                	Scanner input1 = new Scanner(System.in);
                 	System.out.println("Enter a city");
-                	String city1 = input1.nextLine(); //getting user's city
+                	String city1 = input1.nextLine();
 
-			test.operation1(city1); 
+			test.operation1(city1); // thinking this looks better in a function
 
                 	break;
             case 2:
@@ -81,14 +82,14 @@ public class hw4 {
                 break;
 
             	case 4: 
-                	test.operation4a(); //calling function to display the table
+                	test.operation4a();
 
 			Scanner input4 = new Scanner(System.in);
 
 			System.out.println("Enter the purchase id that you wish to cancel");
-			int id = input4.nextInt(); //getting user's purchase_id
+			int id = input4.nextInt();
 
-			test.operation4b(id); 
+			test.operation4b(id);
 
                 	break;
 
@@ -96,25 +97,25 @@ public class hw4 {
 			try{
 				Scanner input5 = new Scanner(System.in);
 
-				String agent_id = "SELECT MAX(A_ID) AS A_ID FROM AGENTS"; //getting new A_ID for new agent
+				String agent_id = "SELECT MAX(A_ID) AS A_ID FROM AGENTS";
 				Statement state = connection.createStatement();
 				ResultSet res5a = state.executeQuery(agent_id);
 				if(res5a.next()){
 					aID = res5a.getInt("A_ID");
 					aID++;
 				}
-				System.out.println("Enter an Agent Name"); 
-				String a_name = input5.nextLine();     //getting user's agent name
+				System.out.println("Enter an Agent Name");
+				String a_name = input5.nextLine();
 				
-				System.out.println("Enter a zip code"); 
-				int a_zip = input5.nextInt();         //getting user's agent zip code 
+				System.out.println("Enter a zip code");
+				int a_zip = input5.nextInt();
 				String city = input5.nextLine();
 				System.out.println("Enter a city");
-				city = input5.nextLine();            //getting user's agent city
+				city = input5.nextLine();
 			
 				String adds = aID + ",'"+a_name+"',"+"'"+city+"',"+a_zip;
-			 
-				test.insert("AGENTS", adds);        //inserting record into AGENT table
+			
+				test.insert("AGENTS", adds);
 				test.operation5(city);
 			}
 			catch(SQLException err) {
@@ -124,21 +125,20 @@ public class hw4 {
                 	break;
 
                 case 6:
-                        number = 0;          //getting out of while loop
+                        number = 0;
                 	test.disConnect();
                 	break;
 
             	default:
-			number = 0;         //getting out of while loop
-                	System.out.println("Number doesnt exist"); 
+                	System.out.println("Number doesnt exist"); //we can have it quit?
         		test.disConnect();
    		}
 	}
 
     }
     public void operation1(String c_city) {
-	String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + c_city + "';";   //displaying clients from desired city 
-        String query1a = "SELECT * FROM AGENTS WHERE A_CITY = '" + c_city + "';";   //displaying agents from desired city
+	String query1 = "SELECT * FROM CLIENTS WHERE C_CITY = '" + c_city + "';"; //depends on how you named your tables
+        String query1a = "SELECT * FROM AGENTS WHERE A_CITY = '" + c_city + "';";
 
         query(query1);
         query(query1a);
@@ -159,17 +159,17 @@ public class hw4 {
             st2a.close();
 
             String op2Insert = cID + ",'"+ name + "'," + "'" + city + "'," + "'" + zip + "'";
-            insert("CLIENTS", op2Insert); // not sure if correct format
+            insert("CLIENTS", op2Insert); // inserting new client
 
             String check = "SELECT * FROM CLIENTS";
             query(check);
-
-            System.out.println("\n          --- POLICIES ---");
-            System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
-            System.out.println("What kind of policy do you want to purchase? ");
-            String purchasePolicy = input2b.nextLine(); // gets policy that user wants
-            purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
-
+			
+			System.out.println("\n          --- POLICIES ---");
+			System.out.println("DENTAL | LIFE | HOME | HEALTH | VEHICLE"); // lists policies for user
+			System.out.println("What kind of policy do you want to purchase? ");
+			purchasePolicy = input2b.nextLine(); // gets policy that user wants
+			purchasePolicy = purchasePolicy.toUpperCase(); // changes to upper case to fit format
+				
             String checkPolicy = "SELECT * FROM POLICY WHERE TYPE = '" + purchasePolicy + "'";
 
             ResultSet rs2b = statement.executeQuery(checkPolicy);
@@ -251,29 +251,34 @@ public class hw4 {
 	}
 	
     public void operation4a(){
-	String query4a = "SELECT * FROM POLICIES_SOLD;";  //display policies_sold table 
+	String query4a = "SELECT * FROM POLICIES_SOLD;";
 
 	query(query4a);
     }
 
     public void operation4b(int pur_id) {
 	try{
-		int row = statement.executeUpdate(deleteById(pur_id));  //delete row with matching purchase_id
+		int row = statement.executeUpdate(deleteById(pur_id));
+		System.out.println(row);
 	}
 	catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         } 
 	catch (Exception e) {
             e.printStackTrace();
-        }	
+        }
+	
+	String query4b = "SELECT * FROM POLICIES_SOLD;";
+	query(query4b);
+	
     }
 	
     public static String deleteById(int p_id){
-	return "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + p_id + ";";  //query to delete a record
+	return "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + p_id + ";";
     }
 	
     public void operation5(String city){
-    	String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';";  //display agents in a city
+    	String query5 = "SELECT * FROM AGENTS WHERE A_CITY = '" + city + "';";
 	
 	query(query5);
 	
