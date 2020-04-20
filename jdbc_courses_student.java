@@ -10,15 +10,15 @@ public class jdbc_courses_student {
 		myDB.initDatabase();
 		
 		StringBuilder builder = new StringBuilder();
-		String query1 = "SELECT * FROM COURSE;";
-		builder.append("<br> Lists of COURSES: " + myDB.query(query1) + "<br>");
 		
 		String studentID = "000";
 		studentID = args[0];
 		
-		String query2 = "SELECT * FROM ENROLLMENT WHERE STUDENTID = " + studentID + ";";
+		String query1 = "SELECT * FROM COURSE " +
+						"WHERE DEPTCODE IN " +
+						"(SELECT DEPTCODE FROM ENROLLMENT WHERE STUDENTID = " + studentID + ");";
 		
-		builder.append("<br><br><br> Courses for STUDENT ID (" + studentID + "):" + myDB.query(query2) + "<br>");
+		builder.append("<br><br><br> Courses for STUDENT ID (" + studentID + "):" + myDB.query(query1) + "<br>");
 		System.out.println(builder.toString());
 		
 		myDB.disConnect();
