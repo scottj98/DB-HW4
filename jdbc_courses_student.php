@@ -3,7 +3,7 @@
 <h3>*** Enter information to view the student's current courses ***</h3>
 
 <form action = "jdbc_courses_student.php" method = "POST">
-	STUDENT ID: <input type = "text" name = studentID"><br>
+	STUDENT ID: <input type = "text" name = "studentID"><br>
 	<input name = "submit" type = "submit">
 </form>
 <br><br>
